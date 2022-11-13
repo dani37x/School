@@ -18,8 +18,8 @@ SCHOOL_SUBJECTS = [
 ]
 
 class Teacher(models.Model):
-    first_name = models.CharField(blank=False)
-    surname = models.CharField(blank=False)
+    first_name = models.CharField(blank=False, max_length=256)
+    surname = models.CharField(blank=False, max_length=256)
 
     def __str__(self):
         return self.first_name + self.surname
@@ -30,7 +30,7 @@ class Teacher(models.Model):
 
 
 class Studnet_Class(models.Model):
-    name = models.CharField(blank=False, unique=True)
+    name = models.CharField(blank=False, unique=True, max_length=256)
     special_class = models.BooleanField(default=False)
     educator = models.ForeignKey(Teacher, on_delete=models.DO_NOTHING )
 
@@ -42,8 +42,8 @@ class Studnet_Class(models.Model):
         verbose_name_plural = 'Student Classes'
 
 class Student(models.Model):
-    first_name = models.CharField(blank=False)
-    surname = models.CharField(blank=False)
+    first_name = models.CharField(blank=False, max_length=256)
+    surname = models.CharField(blank=False, max_length=256)
     disability = models.BooleanField(default=False)
     age = models.IntegerField(default=6, blank=False)
     school_class = models.ForeignKey(Studnet_Class, on_delete=models.DO_NOTHING)
@@ -57,9 +57,9 @@ class Student(models.Model):
 
 class Mark(models.Model):
     mark = models.IntegerField(default=5, blank=False)
-    mark_type = models.CharField(choices=TEST_CHOICES, blank=False)
+    mark_type = models.CharField(choices=TEST_CHOICES, blank=False, max_length=256)
     weight = models.IntegerField(default=2)
-    subject = models.CharField(choices=SCHOOL_SUBJECTS)
+    subject = models.CharField(choices=SCHOOL_SUBJECTS, max_length=256)
     pub_date = models.DateTimeField(auto_now=True)
     student = models.ForeignKey(Student, on_delete=models.DO_NOTHING)
     teachar = models.ForeignKey(Teacher, on_delete=models.DO_NOTHING)
