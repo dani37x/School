@@ -22,7 +22,7 @@ class Teacher(models.Model):
     surname = models.CharField(blank=False, max_length=256)
 
     def __str__(self):
-        return self.first_name + self.surname
+        return f'{self.first_name} {self.surname}'
 
     class Meta:
         verbose_name = 'Teacher'
@@ -47,9 +47,10 @@ class Student(models.Model):
     disability = models.BooleanField(default=False)
     age = models.IntegerField(default=6, blank=False)
     school_class = models.ForeignKey(Studnet_Class, on_delete=models.DO_NOTHING)
+    #change
 
     def __str__(self):
-        return self.first_name + self.surname
+        return f'{self.first_name} {self.surname} {self.school_class}'
 
     class Meta:
         verbose_name = 'Student'
@@ -65,7 +66,7 @@ class Mark(models.Model):
     teachar = models.ForeignKey(Teacher, on_delete=models.DO_NOTHING)
 
     def __str__(self):
-        return self.mark + 'from' + self.subject
+        return f'{self.mark}: {self.mark_type.upper()} from {self.subject.upper()} - {self.student}'
         
     class Meta:
         verbose_name = 'Mark'
