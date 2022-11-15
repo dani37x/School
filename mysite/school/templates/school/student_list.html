@@ -1,4 +1,4 @@
-
+<a href="{% url 'school:school-create' %}">add</a>
 
 <form method="get">
     {{form.as_p}}
@@ -7,5 +7,6 @@
 
 
 {% for obj in object_list %}
-    {{obj.first_name}}
+    {{obj.first_name}}  <a href="{% url 'school:school-update' obj.id %}">edit</a>
+    <br>
 {% endfor %}
