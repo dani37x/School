@@ -7,6 +7,21 @@
 
 
 {% for obj in object_list %}
-    {{obj.first_name}}  <a href="{% url 'school:school-update' obj.id %}">edit</a>
+    {{obj.first_name}}
+    {{obj.surname}} 
+    {{obj.school_class}} 
+    <a href="{% url 'school:school-update' obj.id %}">edit</a>
+    <a href="{% url 'school:school-delete' obj.id %}">delete</a>
     <br>
+{% endfor %}
+
+<br>
+<br>
+<br>
+<br>
+{% for class, total in students_summary.items %}
+    {{class}}
+    {{total}}
+    <br>
+
 {% endfor %}

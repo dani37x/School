@@ -1,0 +1,11 @@
+
+<table border="1px">
+    <th> class</th>
+    <th> students in class</th>
+{% for class, total in students_in_class.items %}
+    <tr>
+        <td>{{class}}</td>
+        <td>{{total}}</td>
+    </tr>
+{% endfor %}
+</table>

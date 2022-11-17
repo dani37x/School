@@ -29,10 +29,10 @@ class Teacher(models.Model):
         verbose_name_plural = 'Teachers'
 
 
-class Studnet_Class(models.Model):
+class Student_Class(models.Model):
     name = models.CharField(blank=False, unique=True, max_length=256)
     special_class = models.BooleanField(default=False)
-    educator = models.ForeignKey(Teacher, on_delete=models.DO_NOTHING )
+    educator = models.ForeignKey(Teacher, on_delete=models.DO_NOTHING, db_constraint=False)
 
     def __str__(self):
         return self.name
@@ -46,7 +46,7 @@ class Student(models.Model):
     surname = models.CharField(blank=False, max_length=256)
     disability = models.BooleanField(default=False)
     age = models.IntegerField(default=6, blank=False)
-    school_class = models.ForeignKey(Studnet_Class, on_delete=models.DO_NOTHING)
+    school_class = models.ForeignKey(Student_Class, on_delete=models.DO_NOTHING)
     #change
 
     def __str__(self):
@@ -62,8 +62,8 @@ class Mark(models.Model):
     weight = models.IntegerField(default=2)
     subject = models.CharField(choices=SCHOOL_SUBJECTS, max_length=256)
     pub_date = models.DateTimeField(auto_now=True)
-    student = models.ForeignKey(Student, on_delete=models.DO_NOTHING)
-    teachar = models.ForeignKey(Teacher, on_delete=models.DO_NOTHING)
+    student = models.ForeignKey(Student, on_delete=models.DO_NOTHING, db_constraint=False)
+    teachar = models.ForeignKey(Teacher, on_delete=models.DO_NOTHING, db_constraint=False)
 
     def __str__(self):
         return f'{self.mark}: {self.mark_type.upper()} from {self.subject.upper()} - {self.student}'
