@@ -1,11 +1,33 @@
-
-<table border="1px">
+<!-- <table border="1px">
     <th> class</th>
     <th> students in class</th>
+    <th> actions</th>
 {% for class, total in students_in_class.items %}
     <tr>
         <td>{{class}}</td>
         <td>{{total}}</td>
+        <td>
+            <a href="{% url 'school:class-update' obj.id %}">edit</a>
+            <a href="{% url 'school:class-delete' obj.id %}">delete</a>
+        </td>
+        
+    </tr>
+{% endfor %}
+</table> -->
+
+<table border="1px">
+    <th> class</th>
+    <th> students in class</th>
+    <th> actions</th>
+{% for row in students_in_class %}
+    <tr>
+        <td>{{row.name}}</td>
+        <td>{{row.count}}</td>
+        <td>
+            <a href="{% url 'school:class-update' row.id  %}">edit</a>
+            <a href="{% url 'school:class-delete' row.id %}">delete</a>
+        </td>
+        
     </tr>
 {% endfor %}
 </table>

@@ -26,9 +26,15 @@ def students_summary(context):
 
     
 def students_in_class(context):
-    return dict(
+    # return dict(
+    #     context
+    #     .values('name')
+    #     .annotate(count=Count('student__school_class'))
+    #     .values_list('name','count')
+    # )
+    data = (
         context
-        .values('name')
         .annotate(count=Count('student__school_class'))
-        .values_list('name','count')
+        .values('name','count', 'id')
     )
+    return data
