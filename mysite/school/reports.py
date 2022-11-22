@@ -34,7 +34,9 @@ def students_in_class(context):
     # )
     data = (
         context
-        .annotate(count=Count('student__school_class'))
-        .values('name','count', 'id')
+        .annotate(count=Coalesce(Count('student__school_class'), 0))
+        .annotate(sum=Coalesce(Sum('student__age'), 0))
+        .values('id','name','count','sum','educator__first_name', 'educator__surname' )
     )
+    print(data)
     return data

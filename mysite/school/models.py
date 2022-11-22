@@ -16,6 +16,10 @@ SCHOOL_SUBJECTS = [
     ('geography', 'geography'),
     ('psychics', 'psychics'),
 ]
+SEX_CHOICE = [
+    ('girl', 'girl'),
+    ('boy', 'boy'),
+]
 
 class Teacher(models.Model):
     first_name = models.CharField(blank=False, max_length=256)
@@ -44,6 +48,7 @@ class Student_Class(models.Model):
 class Student(models.Model):
     first_name = models.CharField(blank=False, max_length=256)
     surname = models.CharField(blank=False, max_length=256)
+    sex = models.CharField(choices=SEX_CHOICE,  blank=False, max_length=256)
     disability = models.BooleanField(default=False)
     age = models.IntegerField(default=6, blank=False)
     school_class = models.ForeignKey(Student_Class, on_delete=models.DO_NOTHING)

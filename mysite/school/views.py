@@ -1,3 +1,6 @@
+
+from django.shortcuts import render
+
 from django.views.generic.list import ListView
 
 from .models import Student, Student_Class
@@ -5,6 +8,7 @@ from .forms import StudentSearchForm
 
 from .reports import students_summary
 from .reports import students_in_class
+
 
 class StudentListView(ListView):
     model = Student
@@ -49,4 +53,5 @@ class Student_ClassListView(ListView):
             **kwargs,
             object_list=context,
             students_in_class=students_in_class(context=context)    
-        )   
+        ) 
+ 

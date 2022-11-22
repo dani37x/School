@@ -1,3 +1,6 @@
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import views as auth_views
+
 from django.views.generic import CreateView, UpdateView, DeleteView
 
 from django.urls import path, reverse_lazy
@@ -8,7 +11,19 @@ from .models import Student, Student_Class
 app_name = 'school'
 
 urlpatterns = [
-    path('', views.StudentListView.as_view(), name='student-list'),
+    path('', login_required( views.StudentListView.as_view()), name='student-list'),
+
+    path('accounts/login/', auth_views.LoginView.as_view(
+        template_name='login.html',
+        next_page='school:student-list'
+        ),
+        name='login-page'),
+    path('accounts/logout/', auth_views.LogoutView.as_view(
+        # template_name='logout.html',
+        next_page='school:student-list'
+        ),
+        name='logout'),
+
     path('school/create/',
         CreateView.as_view(
         model=Student,

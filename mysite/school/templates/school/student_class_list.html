@@ -15,14 +15,19 @@
 {% endfor %}
 </table> -->
 
+<h4> <a href="{% url 'school:student-list' %}"> Students list</a></h4>
 <table border="1px">
     <th> class</th>
     <th> students in class</th>
+    <th> sum of age</th>
+    <th> educator</th>
     <th> actions</th>
 {% for row in students_in_class %}
     <tr>
         <td>{{row.name}}</td>
         <td>{{row.count}}</td>
+        <td>{{row.sum}}</td>
+        <td>{{row.educator__first_name}} {{row.educator__surname}}</td>
         <td>
             <a href="{% url 'school:class-update' row.id  %}">edit</a>
             <a href="{% url 'school:class-delete' row.id %}">delete</a>
