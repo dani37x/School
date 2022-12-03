@@ -1,5 +1,7 @@
 from django.db import models
 
+from django.utils.html import format_html
+
 TEST_CHOICES = [
     ('quiz', 'quiz'),
     ('exam', 'exam'),
@@ -21,12 +23,32 @@ SEX_CHOICE = [
     ('boy', 'boy'),
 ]
 
+STATUS_LIST = [
+    ('maternity_leave', 'maternity leave'),
+    ('sick_leave', 'sick leave'),
+    ('availabile', 'availabile'),
+]
+
 class Teacher(models.Model):
     first_name = models.CharField(blank=False, max_length=256)
     surname = models.CharField(blank=False, max_length=256)
+    status =  models.CharField(choices=STATUS_LIST, max_length=256)
 
     def __str__(self):
         return f'{self.first_name} {self.surname}'
+
+    def teachers(self):
+        return f'{self.first_name} {self.surname}'
+
+    def status_color(self):
+        color = 'blue'
+        if self.status == 'availabile':
+            color = 'green'
+        if self.status == 'maternity_leave':
+            color = 'red'
+        return format_html(
+            f'<span style="color:{color}"> {self.status} </span>'
+        )
 
     class Meta:
         verbose_name = 'Teacher'
