@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.views.generic.list import ListView
 
 from .models import Student, Student_Class
-from .forms import StudentSearchForm
+from .forms import StudentSearchForm, SearchForm
 
 from .reports import students_summary
 from .reports import students_in_class
@@ -18,9 +18,11 @@ class StudentListView(ListView):
 
     def get_context_data(self,*, object_list=None, **kwargs):
         context = object_list if object_list is not None else self.object_list
-        form = StudentSearchForm(self.request.GET)
+        # form = StudentSearchForm(self.request.GET)
+        form = SearchForm(self.request.GET)
         if form.is_valid():
-            searching_field = form.cleaned_data.get('first_name', '')
+            searching_field = form.cleaned_data.get('text','')
+            # searching_field = form.cleaned_data.get('first_name', '')
             try:
                 int_value = int(searching_field)
                 context = context.filter(age=int_value)
@@ -45,7 +47,7 @@ class Student_ClassListView(ListView):
     paginate_by = 5
     ordering = ['name']
 
-
+    
     def get_context_data(self,*,object_list=None, **kwargs):
         context = object_list if object_list is not None else self.object_list
 

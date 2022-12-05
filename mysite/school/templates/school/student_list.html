@@ -4,19 +4,27 @@
 
 <form method="get">
     {{form.as_p}}
+    
     <input type="submit">
 </form>
 
-
-{% for obj in object_list %}
-    {{obj.first_name}}
-    {{obj.surname}} 
-    {{obj.school_class}} 
-    <a href="{% url 'school:school-update' obj.id %}">edit</a>
-    <a href="{% url 'school:school-delete' obj.id %}">delete</a>
-    <br>
-{% endfor %}
-
+<table border="1px">
+        <th>First name</th>
+        <th>Surname</th>
+        <th>Class</th>
+        <th>Actions</th>
+    {% for obj in object_list %}
+        <tr>
+            <td>{{obj.first_name}}</td>
+            <td>{{obj.surname}}</td>
+            <td>{{obj.school_class}}</td> 
+            <td>
+                <a href="{% url 'school:school-update' obj.id %}">edit</a>
+                <a href="{% url 'school:school-delete' obj.id %}">delete</a>
+            </td>
+        </tr>
+    {% endfor %}
+</table>
 <br>
 <br>
 <br>
