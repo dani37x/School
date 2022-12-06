@@ -74,7 +74,6 @@ class Student(models.Model):
     disability = models.BooleanField(default=False)
     age = models.IntegerField(default=6, blank=False)
     school_class = models.ForeignKey(Student_Class, on_delete=models.DO_NOTHING)
-    #change
 
     def __str__(self):
         return f'{self.first_name} {self.surname} {self.school_class}'
