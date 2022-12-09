@@ -47,7 +47,7 @@ def pdf_generator(modeladmin, request, queryset):
     c.showPage()
     c.save()
     buf.seek(0)
-    return FileResponse(buf, as_attachment=True)
+    return FileResponse(buf, as_attachment=True, filename='Students.pdf')
 
 
 class TeacherAdmin(admin.ModelAdmin):
@@ -64,7 +64,8 @@ class MarkAdmin(admin.ModelAdmin):
 
 class StudentAdmin(admin.ModelAdmin):
     list_filter = ['school_class']
-    search_fields = ('first_name__startswith', 'surname__startswith' )
+    search_fields = ('first_name__startswith', 'surname__startswith')
+    actions = [pdf_generator]
 
 
 admin.site.register(Teacher, TeacherAdmin)
