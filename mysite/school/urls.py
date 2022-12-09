@@ -12,7 +12,6 @@ app_name = 'school'
 
 urlpatterns = [
     path('', login_required( views.StudentListView.as_view()), name='student-list'),
-
     path('accounts/login/', auth_views.LoginView.as_view(
         template_name='login.html',
         next_page='school:student-list'
