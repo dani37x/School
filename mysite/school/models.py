@@ -99,6 +99,16 @@ class Mark(models.Model):
         verbose_name_plural = 'Marks'
 
 
+class Ip_address(models.Model):
+    username = models.CharField(blank=False, max_length=256)
+    ip = models.CharField(blank=False, max_length=20)
+
+    def __str__(self):
+        return f'{self.username} - {self.ip}'
+
+    class Meta:
+        verbose_name = 'Ip_address'
+        verbose_name_plural = 'Ip_addresses'
 
 
 

@@ -12,16 +12,20 @@ app_name = 'school'
 
 urlpatterns = [
     path('', login_required( views.StudentListView.as_view()), name='student-list'),
-    path('accounts/login/', auth_views.LoginView.as_view(
-        template_name='login.html',
-        next_page='school:student-list'
-        ),
-        name='login-page'),
-    path('accounts/logout/', auth_views.LogoutView.as_view(
-        # template_name='logout.html',
-        next_page='school:student-list'
-        ),
-        name='logout'),
+    path('page/', views.page, name='page'),
+    path('accounts/login/', views.accounts_login, name='accounts-login'),
+    path('accounts/logout/', views.accounts_logout, name='accounts-logout'),
+
+    # path('accounts/login/', auth_views.LoginView.as_view(
+    #     template_name='login.html',
+    #     next_page='school:student-list'
+    #     ),
+    #     name='login-page'),
+    # path('accounts/logout/', auth_views.LogoutView.as_view(
+    #     # template_name='logout.html',
+    #     next_page='school:student-list'
+    #     ),
+    #     name='logout'),
 
     path('school/create/',
         CreateView.as_view(

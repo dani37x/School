@@ -3,6 +3,18 @@ from django import forms
 from .models import Student
 
 
+class LoginForm(forms.Form):
+    username =  forms.CharField(
+        label='Username',
+        max_length=25,
+        )
+    password = forms.CharField(
+        label='Password',
+        widget=forms.PasswordInput,
+        max_length=50,
+        )
+
+
 SORTING = (
 ('first_name', 'first name'),
 ('surname', 'surname'),
@@ -29,7 +41,6 @@ class SearchForm(forms.Form):
         self.fields['text'].required = False
         self.fields['sort_by'].required = False
         self.fields['sort_type'].required = False
-
 
 
 # Form with model from database

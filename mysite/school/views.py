@@ -1,10 +1,18 @@
 from django.views.generic.list import ListView
+from django.shortcuts import render, redirect
+from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.contrib.auth import login, authenticate, logout
+# from django.contrib import messages
 
-from .models import Student, Student_Class
-from .forms import  SearchForm
+from .models import Student, Student_Class, Ip_address
+from .forms import  SearchForm, LoginForm
 
 from .reports import students_summary
 from .reports import students_in_class
+
+from .functions import get_client_ip
 
 
 class StudentListView(ListView):
@@ -14,6 +22,7 @@ class StudentListView(ListView):
 
     def get_context_data(self,*, object_list=None, **kwargs):
         context = object_list if object_list is not None else self.object_list
+        print(context)
         form = SearchForm(self.request.GET)
 
         if form.is_valid():
@@ -24,7 +33,6 @@ class StudentListView(ListView):
                 sort = '-'
             else:
                 sort = ''
-            print(sort_by, sort_type, searching_field)
             try:
                 context = (
                     context.filter(first_name__icontains=searching_field)
@@ -37,8 +45,6 @@ class StudentListView(ListView):
                     | context.filter(surname__icontains=searching_field)
                     | context.filter(school_class__name=searching_field)
                 )               
-                # print(object_list)
-                # print(context)
 
         return super().get_context_data(
             **kwargs,
@@ -47,7 +53,6 @@ class StudentListView(ListView):
             students_summary = students_summary(context=context),
         )
     
-
 class Student_ClassListView(ListView):
     model = Student_Class
     paginate_by = 5
@@ -62,3 +67,43 @@ class Student_ClassListView(ListView):
             students_in_class=students_in_class(context=context)    
         ) 
  
+
+def accounts_login(request):
+    ipv4 = get_client_ip(request)
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+            user = authenticate(username=username, password=password)
+            if user != None and user != '':
+                login(request, user)
+                already_logged = Ip_address.objects.all()
+                counter = 0
+                for log in already_logged:
+                    if log.username == username:
+                        counter += 1
+                if counter == 3:    
+                    return redirect('school:accounts-logout')
+                else:
+                    Ip_address(username=username, ip=ipv4).save()
+                    return redirect('school:page')
+            else:
+                # messages.add_message(request, messages.ERROR, '[ERROR]  WRONG USERNAME OR PASSWORD')
+                return redirect('school:accounts-login')
+    else:
+        form = LoginForm()
+    return render(request, 'login.html', {'form': form})
+
+
+def accounts_logout(request):
+    print(request.user.username)
+    user = Ip_address.objects.filter(username=request.user.username)
+    user.delete()
+    logout(request)
+    return redirect('school:accounts-login')
+
+
+@login_required
+def page(request):
+    return HttpResponse('x ')
