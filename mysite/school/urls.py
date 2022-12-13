@@ -5,13 +5,16 @@ from django.views.generic import CreateView, UpdateView, DeleteView
 
 from django.urls import path, reverse_lazy
 
+from django_ratelimit.decorators import ratelimit
+
+
 from . import views
 from .models import Student, Student_Class
 
 app_name = 'school'
 
 urlpatterns = [
-    path('', login_required( views.StudentListView.as_view()), name='student-list'),
+    path('',  (ratelimit(key='ip', method='GET', rate='10/m'))(login_required( views.StudentListView.as_view())), name='student-list'),
     path('page/', views.page, name='page'),
     path('accounts/login/', views.accounts_login, name='accounts-login'),
     path('accounts/logout/', views.accounts_logout, name='accounts-logout'),
@@ -51,7 +54,7 @@ urlpatterns = [
         ),
         name='school-delete'),
 
-    path('class/', views.Student_ClassListView.as_view(), name='class-list'),
+    path('class/', (ratelimit(key='ip', method='GET', rate='10/m'))(login_required(views.Student_ClassListView.as_view())), name='class-list'),
     path('class/create/',
         CreateView.as_view(
         model=Student_Class,

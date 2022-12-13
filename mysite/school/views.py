@@ -6,6 +6,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 # from django.contrib import messages
 
+from django_ratelimit.decorators import ratelimit
+
 from .models import Student, Student_Class, Ip_address
 from .forms import  SearchForm, LoginForm
 
@@ -67,7 +69,7 @@ class Student_ClassListView(ListView):
             students_in_class=students_in_class(context=context)    
         ) 
  
-
+@ratelimit(key='ip', rate='5/m', block=False)
 def accounts_login(request):
     ipv4 = get_client_ip(request)
     if request.method == 'POST':
@@ -103,7 +105,8 @@ def accounts_logout(request):
     logout(request)
     return redirect('school:accounts-login')
 
-
+@ratelimit(key='post:username', rate='20/m')
+@ratelimit(key='ip', rate='20/m', block=False)
 @login_required
 def page(request):
-    return HttpResponse('x ')
+    return HttpResponse('x')
