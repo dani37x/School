@@ -1,14 +1,11 @@
 from django.views.generic.list import ListView
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
-# from django.contrib import messages
 
 from django_ratelimit.decorators import ratelimit
 
-from .models import Student, Student_Class, Ip_address
+from .models import Student, Student_Class, Ip_address, Mark
 from .forms import  SearchForm, LoginForm
 
 from .reports import students_summary
@@ -91,7 +88,6 @@ def accounts_login(request):
                     Ip_address(username=username, ip=ipv4).save()
                     return redirect('school:page')
             else:
-                # messages.add_message(request, messages.ERROR, '[ERROR]  WRONG USERNAME OR PASSWORD')
                 return redirect('school:accounts-login')
     else:
         form = LoginForm()
@@ -109,4 +105,5 @@ def accounts_logout(request):
 @ratelimit(key='ip', rate='20/m', block=False)
 @login_required
 def page(request):
-    return HttpResponse('x')
+    welcome = f'welcome {request.user.username}'
+    return render(request, 'page.html' ,{'welcome':welcome})

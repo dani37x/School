@@ -1,33 +1,8 @@
 from django.db import models
+from .models_choices import *
 
 from django.utils.html import format_html
 
-TEST_CHOICES = [
-    ('quiz', 'quiz'),
-    ('exam', 'exam'),
-    ('text', 'test'),
-    ('oral', 'oral')
-]
-
-SCHOOL_SUBJECTS = [
-    ('english', 'english'),
-    ('history', 'history'),
-    ('PE', 'PE'),
-    ('math', 'math'),
-    ('economy', 'economy'),
-    ('geography', 'geography'),
-    ('psychics', 'psychics'),
-]
-SEX_CHOICE = [
-    ('girl', 'girl'),
-    ('boy', 'boy'),
-]
-
-STATUS_LIST = [
-    ('maternity_leave', 'maternity leave'),
-    ('sick_leave', 'sick leave'),
-    ('availabile', 'availabile'),
-]
 
 class Teacher(models.Model):
     first_name = models.CharField(blank=False, max_length=256)
@@ -89,7 +64,7 @@ class Mark(models.Model):
     subject = models.CharField(choices=SCHOOL_SUBJECTS, max_length=256)
     pub_date = models.DateTimeField(auto_now=True)
     student = models.ForeignKey(Student, on_delete=models.DO_NOTHING, db_constraint=False)
-    teachar = models.ForeignKey(Teacher, on_delete=models.DO_NOTHING, db_constraint=False)
+    teacher = models.ForeignKey(Teacher, on_delete=models.DO_NOTHING, db_constraint=False)
 
     def __str__(self):
         return f'{self.mark}: {self.mark_type.upper()} from {self.subject.upper()} - {self.student}'
@@ -109,6 +84,5 @@ class Ip_address(models.Model):
     class Meta:
         verbose_name = 'Ip_address'
         verbose_name_plural = 'Ip_addresses'
-
 
 

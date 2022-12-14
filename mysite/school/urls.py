@@ -14,8 +14,11 @@ from .models import Student, Student_Class
 app_name = 'school'
 
 urlpatterns = [
-    path('',  (ratelimit(key='ip', method='GET', rate='10/m'))(login_required( views.StudentListView.as_view())), name='student-list'),
-    path('page/', views.page, name='page'),
+    path('school/student-list/',
+      (ratelimit(key='ip', method='GET', rate='10/m'))
+      (login_required( views.StudentListView.as_view())),
+       name='student-list'),
+    path('', views.page, name='page'),
     path('accounts/login/', views.accounts_login, name='accounts-login'),
     path('accounts/logout/', views.accounts_logout, name='accounts-logout'),
 
@@ -54,7 +57,10 @@ urlpatterns = [
         ),
         name='school-delete'),
 
-    path('class/', (ratelimit(key='ip', method='GET', rate='10/m'))(login_required(views.Student_ClassListView.as_view())), name='class-list'),
+    path('class/',
+     (ratelimit(key='ip', method='GET', rate='10/m'))
+     (login_required(views.Student_ClassListView.as_view())),
+      name='class-list'),
     path('class/create/',
         CreateView.as_view(
         model=Student_Class,

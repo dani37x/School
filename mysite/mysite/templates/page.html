@@ -1,0 +1,13 @@
+{{welcome}}
+
+
+{% if request.user.is_superuser %}
+    <br>
+    <a href="{% url 'school:student-list' %}">studet list</a>
+    <br>
+    <a href="{% url 'school:class-list' %}">class list</a>
+{% else %}
+    <p> You aren't superuser</p>
+{% endif %}
+<br>
+<a href="{% url 'school:accounts-logout' %}">logout</a>
